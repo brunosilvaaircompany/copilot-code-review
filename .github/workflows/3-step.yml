@@ -76,7 +76,7 @@ jobs:
         continue-on-error: true
         run: |
           set -euo pipefail
-          head -n 1 .github/instructions/frontend.instructions.md | grep -qx '---'
+          head -n 1 .github/instructions/frontend.instructions.md | grep -qx '^---$'
           awk 'NR==1{next} /^applyTo:/{found=1} /^---$/{closed=1; exit} END{exit (found && closed) ? 0 : 1}' .github/instructions/frontend.instructions.md
       # Check if backend instructions file exists
       - name: Check if backend instructions file exists
@@ -87,11 +87,13 @@ jobs:
           file: .github/instructions/backend.instructions.md
 
       - name: Check backend instructions front matter
+        if: ${{ steps.check-backend-instructions.outcome == 'success' }}
         id: check-backend-frontmatter
         continue-on-error: true
         run: |
-          grep -q "^---" .github/instructions/backend.instructions.md
-          grep -q "applyTo:" .github/instructions/backend.instructions.md
+          set -euo pipefail
+          head -n 1 .github/instructions/backend.instructions.md | grep -qx '^---$'
+          awk 'NR==1{next} /^applyTo:/{found=1} /^---$/{closed=1; exit} END{exit (found && closed) ? 0 : 1}' .github/instructions/backend.instructions.md
 
       - name: Update comment - step results
         uses: GrantBirki/comment@v2.1.1

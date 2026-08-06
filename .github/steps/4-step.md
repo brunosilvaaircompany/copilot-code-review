@@ -1,12 +1,15 @@
 ## Etapa 4: Automatize as Revisões
 
 
-As revisões personalizadas parecem estar funcionando muito bem, mas há um problema: elas não são tecnicamente obrigatórias. Solicitar revisões do Copilot manualmente não é sustentável quando há vários professores contribuindo para o site de atividades. Você quer que todo pull request receba automaticamente o feedback do Copilot, especialmente porque há diferentes níveis de experiência em programação entre os colaboradores. Vamos configurar regras do repositório para exigir revisões do Copilot em todas as mudanças.
+As revisões personalizadas parecem estar funcionando muito bem, mas há um problema: elas não são tecnicamente obrigatórias. Solicitar revisões do Copilot manualmente não é sustentável quando há vários professores contribuindo para o site de atividades. Você quer que todo pull request receba automaticamente o feedback do Copilot, especialmente porque há diferentes níveis de experiência em programação entre os colaboradores. Vamos configurar regras do repositório para **solicitar automaticamente** revisões do Copilot em todas as mudanças.
 
 ### 📖 Teoria: Regras de Repositório para Revisões Automáticas
 
 
-As regras do repositório permitem impor revisões automáticas de código em todos os pull requests, garantindo verificações de qualidade consistentes sem depender dos desenvolvedores para solicitar revisões manualmente ou lembrar de seguir a documentação.
+As regras do repositório permitem configurar revisões automáticas de código em pull requests, garantindo verificações de qualidade consistentes sem depender dos desenvolvedores para solicitar revisões manualmente ou lembrar de seguir a documentação.
+
+
+Quando você ativa **Automatically request Copilot code review**, o Copilot passa a ser solicitado automaticamente e publica a revisão como comentário no pull request. Essa revisão **não substitui aprovação humana obrigatória** e **não bloqueia merge por si só**. Se o merge ficar bloqueado, o motivo será outra regra do ruleset (por exemplo: exigir pull request, aprovações humanas ou resolução de conversas).
 
 
 Cada revisão de código consome **AI credits**. Além disso, recursos agentic da revisão podem consumir **GitHub Actions minutes**.
@@ -73,6 +76,11 @@ Para mais informações, veja a [documentação de regras de repositório](https
    - (Opcional) **Review new pushes**: ☑️
    - (Opcional) **Review draft pull requests**: ☑️
 
+   **Sobre as opções opcionais:**
+   - **Review new pushes**: solicita nova revisão automática quando novos commits são enviados ao pull request.
+   - **Review draft pull requests**: permite que a revisão automática também aconteça enquanto o pull request ainda está em draft.
+   - Se essas opções não forem habilitadas, a revisão automática não necessariamente será executada novamente a cada push ou durante a fase de draft.
+
 
 7. Role até o final e clique em **Create**.
 
@@ -80,7 +88,7 @@ Para mais informações, veja a [documentação de regras de repositório](https
 8. Volte para o pull request aberto.
 
 
-9. Note que o botão de merge agora está desabilitado.
+9. Dependendo das demais regras habilitadas no ruleset, o botão de merge pode ficar desabilitado até que os requisitos sejam atendidos.
 
    <img width="300" alt="screenshot of disabled merge button" src="https://github.com/user-attachments/assets/28e4cb05-f09d-423d-8c77-8f0ec61c73ad"/>
 
