@@ -77,7 +77,7 @@ jobs:
         run: |
           set -euo pipefail
           head -n 1 .github/instructions/frontend.instructions.md | grep -qx '---'
-          awk 'NR==1{next} /^---$/{exit found?0:1} /^applyTo:/{found=1} END{exit 1}' .github/instructions/frontend.instructions.md
+          awk 'NR==1{next} /^applyTo:/{found=1} /^---$/{closed=1; exit} END{exit (found && closed) ? 0 : 1}' .github/instructions/frontend.instructions.md
       # Check if backend instructions file exists
       - name: Check if backend instructions file exists
         id: check-backend-instructions
