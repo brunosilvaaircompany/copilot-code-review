@@ -25,3 +25,12 @@ Neste exercício, você aprendeu a:
 - [Skills: Expanda seu time com o agente de código Copilot](https://github.com/skills/expand-your-team-with-copilot)
 - [Skills: Personalize sua experiência com o GitHub Copilot](https://github.com/skills/customize-your-github-copilot-experience)
 - [Skills: IA em Ação](https://github.com/skills/ai-in-actions)
+
+### Acompanhe o impacto por repositório
+
+Administradores e professores podem analisar o engajamento do laboratório com os relatórios diários de métricas de uso do Copilot em nível de repositório. A API REST oferece os seguintes endpoints:
+
+- Organização: `GET /orgs/{org}/copilot/metrics/reports/repos-1-day?day=YYYY-MM-DD`
+- Enterprise: `GET /enterprises/{enterprise}/copilot/metrics/reports/repos-1-day?day=YYYY-MM-DD`
+
+Os relatórios detalham, por repositório, os pull requests revisados pelo Copilot Code Review e a quantidade de sugestões separada por tipo de comentário. Compare esses dados entre os repositórios escolares e com os resultados das revisões para acompanhar adoção, participação e impacto após o exercício. Consulte a [documentação da API REST de métricas do Copilot](https://docs.github.com/en/rest/copilot/metrics) para requisitos de acesso e o formato dos relatórios.

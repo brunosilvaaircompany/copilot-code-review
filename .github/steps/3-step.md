@@ -50,6 +50,12 @@ applyTo: "docs/**/*.md,README.md"
 > [!NOTE]
 > O suporte a cada tipo de instrução varia por cliente (GitHub.com, VS Code, Visual Studio, JetBrains, Xcode, CLI). Consulte sempre a matriz de suporte na documentação oficial.
 
+> [!NOTE]
+> Se o repositório já tiver `REVIEW.md`, `GEMINI.md` ou `CLAUDE.md` na raiz, o Copilot Code Review também respeitará essas diretrizes nativamente. Esses formatos comuns de mercado são incorporados de forma transparente à revisão, sem exigir que o conteúdo seja duplicado em outro arquivo.
+
+> [!IMPORTANT]
+> Ao revisar um pull request, o Copilot Code Review lê `copilot-instructions.md`, `AGENTS.md`, arquivos `*.instructions.md` e agent skills a partir da **branch de origem (head branch)**, e não da branch base. Assim, você pode testar novas regras no próprio pull request antes de mesclá-las.
+
 ### ⌨️ Atividade: Adicione instruções gerais
 
 
@@ -148,7 +154,7 @@ Vamos criar critérios de revisão específicos do Copilot para o frontend e bac
 > Se você quiser que um arquivo de instrução seja usado apenas por um tipo de agente, pode usar `excludeAgent` no front matter (por exemplo: `excludeAgent: "code-review"` ou `excludeAgent: "cloud-agent"`).
 
 
-5. Faça commit e push dos arquivos de instrução.
+5. Faça commit e push dos arquivos de instrução na branch `add-announcement-banner`.
 
 
 > [!TIP]
@@ -166,9 +172,9 @@ Se quiser elevar o nível da revisão do Copilot:
 
 Com nossas novas instruções definidas, o Copilot agora entende melhor o que é importante para nosso projeto. Vamos pedir outra revisão.
 
-6. No VS Code, certifique-se de que as instruções foram realmente commitadas e faça push para o repositório.
+6. Ainda na branch `add-announcement-banner`, altere ou acrescente uma regra observável — por exemplo, uma exigência de acessibilidade para o banner — e faça commit e push. Não crie outro pull request: essa mudança servirá para testar as regras na head branch.
 
-7. No navegador, retorne ao pull request criado recentemente.
+7. No navegador, retorne ao mesmo pull request criado anteriormente.
 
 8. No canto superior direito, encontre o menu **Reviewers** e o botão **Re-request review** ao lado de **Copilot**. Clique nele e aguarde um momento para o Copilot adicionar comentários ao pull request.
 
@@ -178,7 +184,7 @@ Com nossas novas instruções definidas, o Copilot agora entende melhor o que é
 > [!NOTE]
 > Se você for rápido demais após enviar novos commits, talvez precise esperar um pouco para o botão aparecer, ou atualizar a página.
 
-9. Observe que o feedback do Copilot agora é diferente da revisão anterior.
+9. Compare o feedback com a revisão anterior e observe como o Copilot passou a considerar a regra alterada, sem que ela precisasse ser mesclada na branch base.
 
 10. Com a revisão solicitada, aguarde um momento para a Mona checar seu trabalho, fornecer feedback e compartilhar a próxima lição.
 
