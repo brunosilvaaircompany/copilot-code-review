@@ -135,7 +135,7 @@ jobs:
           vars: |
             step_number: 4
             results_table:
-              - description: "Repository ruleset ativo com solicitação automática de revisão do Copilot"
+              - description: "Active repository ruleset with automatic Copilot code review request"
                 passed: ${{ steps.check-ruleset.outcome == 'success' }}
 
       - name: Fail job if not all checks passed
