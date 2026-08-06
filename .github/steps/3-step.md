@@ -14,6 +14,7 @@ As instruções personalizadas do repositório permitem fornecer ao Copilot cont
 
 - **Instruções para o repositório inteiro**: Se aplicam a todo o código do repositório. Ex: `.github/copilot-instructions.md`
 - **Instruções específicas por caminho**: Se aplicam a arquivos específicos para criar critérios focados em diferentes partes do código. Ex: `.github/instructions/NOME.instructions.md`.
+- **Instruções de agente**: Fornecem contexto adicional para agentes em arquivos como `AGENTS.md`.
 
 
 As instruções são escritas em linguagem natural, no formato Markdown, e normalmente incluem:
@@ -30,14 +31,14 @@ Arquivos de instrução específicos por caminho incluem [YAML front matter](htt
 
 ```yaml
 ---
-applyTo: "tests/**/**,docs/*.md"
+applyTo: "**/*.test.*,docs/**/*.md"
 ---
 # Testing Guidelines ...
 ```
 
 ```yaml
 ---
-applyTo: "docs/*.md,README.md"
+applyTo: "docs/**/*.md,README.md"
 ---
 # Documentation Guidelines ...
 ```
@@ -45,6 +46,9 @@ applyTo: "docs/*.md,README.md"
 
 > [!TIP]
 > As [instruções personalizadas](https://docs.github.com/en/copilot/how-tos/custom-instructions/adding-repository-custom-instructions-for-github-copilot) funcionam tanto para revisões locais no VS Code quanto para pull requests, garantindo consistência em todo o fluxo de desenvolvimento.
+
+> [!NOTE]
+> O suporte a cada tipo de instrução varia por cliente (GitHub.com, VS Code, Visual Studio, JetBrains, Xcode, CLI). Consulte sempre a matriz de suporte na documentação oficial.
 
 ### ⌨️ Atividade: Adicione instruções gerais
 
@@ -106,7 +110,7 @@ Vamos criar critérios de revisão específicos do Copilot para o frontend e bac
 
    ```markdown
    ---
-   applyTo: "*.html,*.css,*.js"
+   applyTo: "**/*.html,**/*.css,**/*.js"
    ---
 
    ## Diretrizes de Frontend
@@ -128,7 +132,7 @@ Vamos criar critérios de revisão específicos do Copilot para o frontend e bac
 
    ```markdown
    ---
-   applyTo: "backend/**/*,*.py"
+   applyTo: "src/backend/**/*.py"
    ---
 
    ## Diretrizes de Backend
@@ -140,12 +144,23 @@ Vamos criar critérios de revisão específicos do Copilot para o frontend e bac
    - Verifique se mudanças no backend se refletem no frontend (`src/static/**`). Se encontrar possíveis breaking changes, mencione ao desenvolvedor.
    ```
 
+> [!TIP]
+> Se você quiser que um arquivo de instrução seja usado apenas por um tipo de agente, pode usar `excludeAgent` no front matter (por exemplo: `excludeAgent: "code-review"` ou `excludeAgent: "cloud-agent"`).
+
 
 5. Faça commit e push dos arquivos de instrução.
 
 
 > [!TIP]
 > O VS Code possui comandos integrados para ajudar a gerenciar instruções. Tente abrir a paleta de comandos e buscar por `instructions`.
+
+### ⌨️ Atividade: (opcional) Expanda com skills e MCP
+
+Se quiser elevar o nível da revisão do Copilot:
+
+- Adicione skills em `.github/skills/` para revisões mais especializadas.
+- Configure servidores MCP no repositório para fornecer contexto adicional à revisão.
+- Use `AGENTS.md` para instruções compartilhadas entre ferramentas e agentes.
 
 ### ⌨️ Atividade: Solicite outra revisão
 

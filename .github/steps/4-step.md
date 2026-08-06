@@ -9,7 +9,7 @@ As revisões personalizadas parecem estar funcionando muito bem, mas há um prob
 As regras do repositório permitem impor revisões automáticas de código em todos os pull requests, garantindo verificações de qualidade consistentes sem depender dos desenvolvedores para solicitar revisões manualmente ou lembrar de seguir a documentação.
 
 
-Cada revisão de código consome uma [Unidade de Solicitação Premium (PRU)](https://docs.github.com/en/copilot/concepts/billing/copilot-requests) do autor do pull request.
+Cada revisão de código consome **AI credits**. Além disso, recursos agentic da revisão podem consumir **GitHub Actions minutes**.
 
 
 **Opções de Aplicação:**
@@ -30,6 +30,9 @@ Cada revisão de código consome uma [Unidade de Solicitação Premium (PRU)](ht
 
 
 Para mais informações, veja a [documentação de regras de repositório](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets).
+
+> [!NOTE]
+> Além de rulesets no repositório/organização, usuários individuais em planos compatíveis também podem habilitar revisão automática para seus próprios pull requests nas configurações do Copilot.
 
 ### ⌨️ Atividade: Crie uma regra de repositório
 
@@ -67,6 +70,8 @@ Para mais informações, veja a [documentação de regras de repositório](https
    - **Exigir pull request antes de mesclar**: ☑️
    - **Exigir resolução de conversas antes de mesclar**: ☑️
    - **Solicitar automaticamente revisão de código do Copilot**: ☑️
+   - (Opcional) **Review new pushes**: ☑️
+   - (Opcional) **Review draft pull requests**: ☑️
 
 
 7. Role até o final e clique em **Create**.
@@ -80,7 +85,7 @@ Para mais informações, veja a [documentação de regras de repositório](https
    <img width="300" alt="screenshot of disabled merge button" src="https://github.com/user-attachments/assets/28e4cb05-f09d-423d-8c77-8f0ec61c73ad"/>
 
 
-10. Clique em **Resolve conversation** para todo feedback atual e antigo do Copilot. Não é necessário implementar nada.
+10. Revise os comentários do Copilot com cuidado. Resolva apenas os que realmente foram tratados (ou considerados não aplicáveis com justificativa).
 
 
 11. Faça o merge do pull request.
@@ -88,6 +93,9 @@ Para mais informações, veja a [documentação de regras de repositório](https
 
 > [!NOTE]
 > Se o botão **Merge pull request** não ativar, verifique se há conversas não resolvidas nos comentários antigos.
+
+> [!NOTE]
+> Em ambientes com requisitos de rede ou performance, você pode personalizar a execução da revisão com `.github/workflows/copilot-code-review.yml` (ou `copilot-setup-steps.yml`), definir runners e ajustar regras de firewall.
 
 
 12. Com o pull request mesclado, aguarde um momento para a Mona checar seu trabalho, fornecer feedback e fazer a revisão final. Parabéns! Você terminou! 🎉
@@ -120,7 +128,7 @@ Então... vamos corrigir isso! 🧑‍🚀🚀
 
 
 > [!TIP]
-> Os modelos premium (que usam PRUs) normalmente são mais robustos e exigem menos prompts de refinamento.
+> Modelos mais avançados normalmente são mais robustos e exigem menos prompts de refinamento, porém tendem a consumir mais AI credits.
 
 
    > ![Static Badge](https://img.shields.io/badge/-Prompt-text?style=social&logo=github%20copilot)

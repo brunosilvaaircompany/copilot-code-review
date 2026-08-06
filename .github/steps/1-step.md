@@ -111,15 +111,18 @@ Vamos adicionar um banner simples para professores fazerem comunicados e pedir f
 
 
 
-11. Peça uma revisão ao Copilot usando a paleta de comandos do VS Code:
+11. Peça uma revisão ao Copilot no VS Code:
 
-   - Pressione `Ctrl+Shift+P` (Windows/Linux) ou `Cmd+Shift+P` (Mac) para abrir a paleta de comandos.
-   - Digite `Chat: Review` e selecione a opção correspondente.
+   - Abra o painel **Source Control**.
+   - Passe o mouse sobre **CHANGES** e clique em **Copilot Code Review - Uncommitted Changes**.
    - Aguarde o Copilot analisar suas alterações e adicionar comentários de revisão.
 
 
 > [!TIP]
-> Você pode escolher revisar alterações não commitadas, staged ou todas as alterações não enviadas. Certifique-se de salvar os arquivos antes de pedir a revisão.
+> Se preferir, você também pode selecionar um trecho de código no editor, clicar com o botão direito e usar **Generate Code > Review**. Certifique-se de salvar os arquivos antes de pedir a revisão.
+
+> [!NOTE]
+> Alguns tipos de arquivo são ignorados pela revisão do Copilot (por exemplo: `*.lock`, `*.log`, `*.svg`, diretórios gerados e vendor).
 
 
 12. Expanda o painel **Comments** para ver a lista de feedbacks do Copilot.
@@ -139,7 +142,7 @@ Vamos adicionar um banner simples para professores fazerem comunicados e pedir f
 <summary>Está com problemas? 🤷</summary><br/>
 
 - A Revisão do Copilot no VS Code só considera alterações não commitadas. Não faça commit antes de pedir a revisão.
-- Se o Copilot não fornecer feedback de revisão, certifique-se de clicar no botão correto para o agrupamento (unstaged, staged, uncommitted).
+- Se o Copilot não fornecer feedback, confirme que você acionou o botão **Copilot Code Review - Uncommitted Changes** no painel **Source Control**.
 - Se o Copilot não enxergar suas alterações, certifique-se de salvar os arquivos antes.
 
 </details>
