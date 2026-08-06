@@ -54,16 +54,16 @@ jobs:
           file: exercise-toolkit/markdown-templates/step-feedback/checking-work.md
           edit-mode: replace
 
-      - name: Check if Copilot is assigned as reviewer
+      - name: Check if Copilot review was requested
         id: check-copilot-reviewer
         continue-on-error: true
         env:
           REVIEWER_LOGIN: ${{ github.event.requested_reviewer.login }}
         run: |
           if [[ "${REVIEWER_LOGIN,,}" == "copilot" ]]; then
-            echo "Copilot is assigned as reviewer."
+            echo "Copilot review was requested."
           else
-            echo "Copilot is NOT assigned as reviewer."
+            echo "Copilot review was NOT requested."
             exit 1
           fi
 
@@ -78,7 +78,7 @@ jobs:
           vars: |
             step_number: 2
             results_table:
-              - description: "Copilot reviewed pull request"
+              - description: "Copilot was requested as reviewer on the pull request"
                 passed: ${{ steps.check-copilot-reviewer.outcome == 'success' }}
 
       - name: Fail job if not all checks passed

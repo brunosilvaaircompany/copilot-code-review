@@ -9,7 +9,8 @@ _Aproveite a revisão de código do GitHub Copilot para promover a qualidade do 
 - **O que você vai construir**: Você irá atualizar o site de atividades extracurriculares da Mergington High School e personalizar o Copilot para revisar pull requests automaticamente, permitindo que mais professores contribuam.
 - **Pré-requisitos**:
 
-  - Assinatura do GitHub Copilot (é necessário um plano pago)
+  - Acesso ao GitHub Copilot code review em um plano compatível (Copilot Pro, Pro+, Max, Business ou Enterprise)
+  - Em organizações com Copilot Business/Enterprise, administradores podem habilitar code review para membros sem licença individual
   - Familiaridade com revisão de código em pull requests
   - Familiaridade com Codespaces, ou o exercício [Code with Codespaces](https://github.com/skills/code-with-codespaces)
   - Familiaridade com o GitHub Copilot, ou o exercício [Getting Started with GitHub](https://github.com/skills/getting-started-with-github-copilot)
@@ -22,6 +23,9 @@ Neste exercício, você irá:
 1. Solicitar revisões de código do Copilot em pull requests
 1. Personalizar os critérios de revisão do Copilot com instruções específicas do repositório
 1. Configurar revisões automáticas usando regras do repositório
+
+> [!NOTE]
+> Este exercício usa VS Code e GitHub.com. O GitHub Copilot code review também está disponível em outros clientes compatíveis, como Visual Studio, JetBrains, Xcode, GitHub Mobile e GitHub CLI.
 
 ### Como iniciar este exercício
 

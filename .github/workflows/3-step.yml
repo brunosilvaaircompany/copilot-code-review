@@ -70,6 +70,14 @@ jobs:
         with:
           file: .github/instructions/frontend.instructions.md
 
+      - name: Check frontend instructions front matter
+        if: ${{ steps.check-frontend-instructions.outcome == 'success' }}
+        id: check-frontend-frontmatter
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          head -n 1 .github/instructions/frontend.instructions.md | grep -qx '^---$'
+          awk 'NR==1{next} /^applyTo:/{found=1} /^---$/{closed=1; exit} END{exit (found && closed) ? 0 : 1}' .github/instructions/frontend.instructions.md
       # Check if backend instructions file exists
       - name: Check if backend instructions file exists
         id: check-backend-instructions
@@ -77,6 +85,15 @@ jobs:
         uses: skills/exercise-toolkit/actions/file-exists@v0.9.3
         with:
           file: .github/instructions/backend.instructions.md
+
+      - name: Check backend instructions front matter
+        if: ${{ steps.check-backend-instructions.outcome == 'success' }}
+        id: check-backend-frontmatter
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          head -n 1 .github/instructions/backend.instructions.md | grep -qx '^---$'
+          awk 'NR==1{next} /^applyTo:/{found=1} /^---$/{closed=1; exit} END{exit (found && closed) ? 0 : 1}' .github/instructions/backend.instructions.md
 
       - name: Update comment - step results
         uses: GrantBirki/comment@v2.1.1
@@ -93,8 +110,12 @@ jobs:
                 passed: ${{ steps.check-copilot-instructions.outcome == 'success' }}
               - description: "Created frontend-specific instructions file"
                 passed: ${{ steps.check-frontend-instructions.outcome == 'success' }}
+              - description: "Frontend instructions include YAML front matter with applyTo"
+                passed: ${{ steps.check-frontend-frontmatter.outcome == 'success' }}
               - description: "Created backend-specific instructions file"
                 passed: ${{ steps.check-backend-instructions.outcome == 'success' }}
+              - description: "Backend instructions include YAML front matter with applyTo"
+                passed: ${{ steps.check-backend-frontmatter.outcome == 'success' }}
 
       - name: Fail job if not all checks passed
         if: contains(steps.*.outcome, 'failure')

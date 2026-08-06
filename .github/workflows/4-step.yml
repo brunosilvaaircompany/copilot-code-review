@@ -56,24 +56,75 @@ jobs:
           edit-mode: replace
 
       - name: Check if repository ruleset exists
-        if: ${{ github.event.repository.private == false }}
         id: check-ruleset
         continue-on-error: true
         run: |
-          # Use GitHub API to check for rulesets (only available for public repositories)
-          response=$(gh api repos/${{ github.repository }}/rulesets --jq '.[].name' 2>/dev/null || echo "")
-          echo $response
-          if echo "$response" | grep -i "copilot" || echo "$response" | grep -i "review"; then
-            echo "ruleset_exists=true" >> $GITHUB_OUTPUT
-          else
-            echo "ruleset_exists=false" >> $GITHUB_OUTPUT
+          set -euo pipefail
+
+          classify_error() {
+            local stderr_file="$1"
+            local stderr_content
+            stderr_content="$(cat "$stderr_file")"
+            if echo "$stderr_content" | grep -Eq 'HTTP 401|401 Unauthorized'; then
+              echo "::error::Falha de autenticação ao consultar rulesets. Revise o token do workflow (GITHUB_TOKEN/GH_TOKEN)."
+            elif echo "$stderr_content" | grep -Eq 'HTTP 403|403 Forbidden'; then
+              echo "::error::Permissão insuficiente para consultar rulesets. Revise as permissões administrativas e o escopo do token do workflow."
+            else
+              echo "::error::Falha ao consultar a API de rulesets. Verifique conectividade e permissões do workflow."
+            fi
+            echo "$stderr_content"
+          }
+
+          echo "ruleset_exists=false" >> "$GITHUB_OUTPUT"
+
+          rulesets_response="$(mktemp)"
+          rulesets_stderr="$(mktemp)"
+
+          if ! gh api "repos/${{ github.repository }}/rulesets?per_page=100" >"$rulesets_response" 2>"$rulesets_stderr"; then
+            classify_error "$rulesets_stderr"
             exit 1
           fi
+
+          if ! jq -e 'type == "array"' "$rulesets_response" >/dev/null; then
+            echo "::error::Resposta inválida da API ao listar rulesets. Esperado JSON em formato de lista."
+            cat "$rulesets_response"
+            exit 1
+          fi
+
+          ruleset_ids=$(jq -r '.[] | select((.enforcement // "") == "active") | .id' "$rulesets_response")
+
+          if [ -z "$ruleset_ids" ]; then
+            echo "::error::Nenhum ruleset ativo encontrado no repositório. Ative um ruleset com solicitação automática de revisão do Copilot."
+            exit 1
+          fi
+
+          for ruleset_id in $ruleset_ids; do
+            ruleset_detail_response="$(mktemp)"
+            ruleset_detail_stderr="$(mktemp)"
+
+            if ! gh api "repos/${{ github.repository }}/rulesets/$ruleset_id" >"$ruleset_detail_response" 2>"$ruleset_detail_stderr"; then
+              classify_error "$ruleset_detail_stderr"
+              exit 1
+            fi
+
+            if ! jq -e 'type == "object"' "$ruleset_detail_response" >/dev/null; then
+              echo "::error::Resposta inválida da API ao consultar o ruleset $ruleset_id."
+              cat "$ruleset_detail_response"
+              exit 1
+            fi
+
+            if jq -e 'any((.rules // [])[]?; ((.type // "") | ascii_downcase) == "copilot_code_review")' "$ruleset_detail_response" >/dev/null; then
+              echo "ruleset_exists=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          done
+
+          echo "::error::Nenhum ruleset ativo contém a regra de solicitação automática de revisão do Copilot."
+          exit 1
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update comment - step results
-        if: ${{ github.event.repository.private == false }}
         uses: GrantBirki/comment@v2.1.1
         with:
           repository: ${{ env.ISSUE_REPOSITORY }}
@@ -84,7 +135,7 @@ jobs:
           vars: |
             step_number: 4
             results_table:
-              - description: "Repository ruleset created that requires Copilot reviews"
+              - description: "Active repository ruleset with automatic Copilot code review request"
                 passed: ${{ steps.check-ruleset.outcome == 'success' }}
 
       - name: Fail job if not all checks passed

@@ -6,7 +6,7 @@ Agora que você testou as capacidades de revisão local do Copilot e fez algumas
 ### 📖 Teoria: Revisão de Código em Pull Requests
 
 
-O GitHub Copilot analisa seu código e fornece feedback inteligente com sugestões acionáveis que você pode aplicar instantaneamente. Cada revisão de código consome uma [Unidade de Solicitação Premium (PRU)](https://docs.github.com/en/copilot/concepts/billing/copilot-requests) do solicitante.
+O GitHub Copilot analisa seu código e fornece feedback inteligente com sugestões acionáveis que você pode aplicar instantaneamente. Cada revisão consome **AI credits**, e os recursos agentic da revisão também podem consumir **GitHub Actions minutes**.
 
 
 > [!IMPORTANT]
@@ -22,6 +22,12 @@ O GitHub Copilot analisa seu código e fornece feedback inteligente com sugestõ
 - **Não bloqueante**: Fornece revisões do tipo "Comentário" que não bloqueiam a mesclagem nem contam para aprovações obrigatórias
 - **Personalizável**: Suporta instruções customizadas para alinhar com os padrões do time
 - **Seguro**: Opera dentro da infraestrutura segura do GitHub
+
+> [!NOTE]
+> O Copilot code review pode rodar em esforço **Low** (padrão) ou **Medium** (análise mais profunda). O modo Medium tende a consumir mais AI credits e mais minutos de Actions.
+
+> [!NOTE]
+> Alguns arquivos são excluídos da revisão do Copilot (como `*.lock`, `*.log`, `*.svg` e partes geradas automaticamente).
 
 
 Para mais informações, veja a [documentação de revisão de código do GitHub Copilot](https://docs.github.com/en/copilot/how-tos/use-copilot-agents/request-a-code-review).
@@ -40,7 +46,7 @@ Para mais informações, veja a [documentação de revisão de código do GitHub
    - **title:** `Add announcement banner`
 
 
-3. Na área de detalhes à direita, encontre o menu **Reviewers**. Clique no **ícone de configurações** para mostrar a lista de revisores disponíveis e selecione **Copilot**.
+3. Na área de detalhes à direita, encontre **Reviewers** e clique em **Request** ao lado de **Copilot**.
 
    <img width="300" alt="screenshot of reviewers menu" src="https://github.com/user-attachments/assets/0f9f2e86-51b7-4542-82a1-afb6a22ab3ca"/>
 
@@ -59,7 +65,7 @@ Para mais informações, veja a [documentação de revisão de código do GitHub
 <summary>Está com problemas? 🤷</summary><br/>
 
 - Se o Copilot não aparecer na lista de revisores, verifique se o repositório tem o Copilot habilitado
-- Se o Copilot não aparecer na lista de revisores, confira seu plano de assinatura. Não está disponível no plano gratuito.
+- Se o Copilot não aparecer na lista de revisores, confira seu plano de assinatura e políticas da organização. Em organizações com Copilot Business/Enterprise, admins podem habilitar revisão para membros sem licença individual.
 - Às vezes, as revisões levam um ou dois minutos para serem concluídas.
 
 </details>
