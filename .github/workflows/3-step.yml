@@ -71,12 +71,13 @@ jobs:
           file: .github/instructions/frontend.instructions.md
 
       - name: Check frontend instructions front matter
+        if: ${{ steps.check-frontend-instructions.outcome == 'success' }}
         id: check-frontend-frontmatter
         continue-on-error: true
         run: |
-          grep -q "^---" .github/instructions/frontend.instructions.md
-          grep -q "applyTo:" .github/instructions/frontend.instructions.md
-
+          set -euo pipefail
+          head -n 1 .github/instructions/frontend.instructions.md | grep -qx '---'
+          awk 'NR==1{next} /^---$/{exit found?0:1} /^applyTo:/{found=1} END{exit 1}' .github/instructions/frontend.instructions.md
       # Check if backend instructions file exists
       - name: Check if backend instructions file exists
         id: check-backend-instructions
