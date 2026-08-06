@@ -59,15 +59,25 @@ jobs:
         id: check-ruleset
         continue-on-error: true
         run: |
-          # Validate that at least one ruleset includes a Copilot automatic review rule.
-          response=$(gh api repos/${{ github.repository }}/rulesets 2>/dev/null || echo "[]")
-          echo "$response"
-          if echo "$response" | jq -e '.[] | (.rules // [])[] | select((.type // "") | test("copilot"; "i"))' >/dev/null; then
-            echo "ruleset_exists=true" >> $GITHUB_OUTPUT
-          else
-            echo "ruleset_exists=false" >> $GITHUB_OUTPUT
+          # Validate that at least one active ruleset includes a Copilot automatic review rule.
+          ruleset_ids=$(gh api "repos/${{ github.repository }}/rulesets?per_page=100" 2>/dev/null |
+            jq -r '.[] | select((.enforcement // "") == "active") | .id')
+
+          if [ -z "$ruleset_ids" ]; then
+            echo "ruleset_exists=false" >> "$GITHUB_OUTPUT"
             exit 1
           fi
+
+          for ruleset_id in $ruleset_ids; do
+            if gh api "repos/${{ github.repository }}/rulesets/$ruleset_id" 2>/dev/null |
+              jq -e 'any((.rules // [])[]?; (.type // "") | test("copilot"; "i"))' >/dev/null; then
+              echo "ruleset_exists=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          done
+
+          echo "ruleset_exists=false" >> "$GITHUB_OUTPUT"
+          exit 1
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
